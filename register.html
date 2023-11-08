@@ -30,12 +30,10 @@
 
     <link rel="stylesheet" href="{% static 'css/styles.css'%}">
 
+  
 
-<!-- 
 
-    <style>
-       
-    </style> -->
+
 </head>
 <body>
      <!-- Spinner Start -->
@@ -67,12 +65,16 @@
     </nav><br><br>
     <!-- Navbar End -->
 
+  
+
 
     
 
 
     <div class="container">
         <h2><center>Register<center></h2>
+            
+
 
 
        
@@ -118,6 +120,7 @@
         </form>
     </div>
 
+
    
 
   <script>
@@ -147,23 +150,45 @@
         } else if (/\s/.test(username)) {
             // Check if the username contains white spaces
             usernameError.textContent = 'Username cannot contain white spaces.';
-        } else {
+        }
+        else if(username === '')
+        {
+            usernameError.textContent = 'Username cannot be empty.';
+            
+        }
+        else {
             usernameError.textContent = '';
         }
     
         checkFormValidity();
     }
 
-    function validateEmail() {
-        const email = emailInput.value;
-        const emailError = document.getElementById('emailError');
-        if (!isValidEmail(email)) {
-            emailError.textContent = 'Invalid email address.';
-        } else {
-            emailError.textContent = '';
-        }
-        checkFormValidity();
+   
+
+
+function validateEmail() {
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+    const emailValue = emailInput.value.trim().toLowerCase(); // Convert to lowercase
+
+    if (emailValue === '') {
+        emailError.textContent = 'Email cannot be empty.';
+        emailError.style.color = 'red';
+    } else if (/^[0-9]/.test(emailValue)) {
+        emailError.textContent = 'Email cannot start with a number.';
+        emailError.style.color = 'red';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+        emailError.textContent = 'Invalid email format.';
+        emailError.style.color = 'red';
+    } else {
+        emailError.textContent = '';
     }
+    checkFormValidity();
+}
+
+
+
+
 
     function validatePassword() {
         const password = passwordInput.value;
@@ -206,27 +231,11 @@
         
         }
     }
-</script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('success') === 'true') {
-            alert('Registration successful!'); // Display an alert message
-        }
-    });
 </script>
 
 
-
-
-
-
- 
-
-
-
-
+    
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -240,5 +249,23 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js'%}"></script>
+
+
+<!-- Add this at the bottom of the file, after your existing scripts -->
+<script>
+    // Check if the registration_success variable is true
+    const registrationSuccess = "{{ registration_success }}";
+
+    if (registrationSuccess) {
+        // Display the confirmation box
+        alert("registration completer successfully!");
+
+        // Redirect to the login page
+        window.location.href = "{% url 'login' %}";
+    }
+</script>
+
+
+
 </body>
 </html>
